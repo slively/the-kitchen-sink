@@ -1,3 +1,3 @@
-module.exports = function enableAuthentication(app) {
+module.exports = function enableAuthentication() {
   // placeholder
 };
