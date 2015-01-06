@@ -1,27 +1,27 @@
 var loopback = require('loopback'),
     boot = require('loopback-boot'),
-    app = module.exports = loopback();
+    server = module.exports = loopback();
 
 // boot scripts mount components like REST API
-boot(app, __dirname);
+boot(server, __dirname);
 
 // Requests that get this far won't be handled
 // by any middleware. Convert them into a 404 error
 // that will be handled later down the chain.
-app.use(loopback.urlNotFound());
+server.use(loopback.urlNotFound());
 
 // The ultimate error handler.
-app.use(loopback.errorHandler());
+server.use(loopback.errorHandler());
 
-app.start = function() {
+server.start = function() {
   // start the web server
-  return app.listen(function() {
-    app.emit('started');
-    console.log('Web server listening at: %s', app.get('url'));
+  return server.listen(function() {
+    server.emit('started');
+    console.log('Web server listening at: %s', server.get('url'));
   });
 };
 
 // start the server if `$ node server.js`
 if (require.main === module) {
-  app.start();
+  server.start();
 }

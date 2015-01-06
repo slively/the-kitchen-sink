@@ -1,4 +1,4 @@
-module.exports = function mountLoopBackExplorer(app) {
+module.exports = function mountLoopBackExplorer(server) {
     var explorer;
     try {
         explorer = require('loopback-explorer');
@@ -9,15 +9,15 @@ module.exports = function mountLoopBackExplorer(app) {
         return;
     }
 
-    var restApiRoot = app.get('restApiRoot');
+    var restApiRoot = server.get('restApiRoot');
 
-    var explorerApp = explorer(app, { basePath: restApiRoot });
-    app.use('/explorer', explorerApp);
-    app.once('started', function() {
-        var baseUrl = app.get('url').replace(/\/$/, '');
+    var explorerServer = explorer(server, { basePath: restApiRoot });
+    server.use('/explorer', explorerServer);
+    server.once('started', function() {
+        var baseUrl = server.get('url').replace(/\/$/, '');
         // express 4.x (loopback 2.x) uses `mountpath`
         // express 3.x (loopback 1.x) uses `route`
-        var explorerPath = explorerApp.mountpath || explorerApp.route;
+        var explorerPath = explorerServer.mountpath || explorerServer.route;
         console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     });
 };

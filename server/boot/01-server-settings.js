@@ -1,15 +1,17 @@
 var loopback = require('loopback'),
     bodyParser = require('body-parser');
 
-module.exports = function serverSettings(app) {
-    app.disable('x-powered-by');
-    app.disable('etag');
+module.exports = function serverSettings(server) {
+    // instantiate logger
+    require('../logger')(server);
+    server.disable('x-powered-by');
+    server.disable('etag');
 
     // Set up the /favicon.ico
-    app.use(loopback.favicon(__dirname+'/../../client/img/favicon.ico'));
+    server.use(loopback.favicon(__dirname+'/../../client/img/favicon.ico'));
 
     // request pre-processing middleware
-    app.use(loopback.compress());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: true }));
+    server.use(loopback.compress());
+    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({ extended: true }));
 };

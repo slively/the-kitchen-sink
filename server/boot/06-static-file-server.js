@@ -12,28 +12,28 @@ var staticServer = require('loopback').static,
 
     ];
 
-module.exports = function mountStaticFileServer(app) {
+module.exports = function mountStaticFileServer(server) {
     var cachedIndexPage = '',
         indexPageEjsData = {
             serverConfig: {}
         };
 
     ['/css', '/js', '/img', '/html', '/fonts'].forEach(function(folder){
-        app.use(folder, staticServer(path.join(__dirname, '../../client' + folder)));
-        app.use(folder, function(req, res){
+        server.use(folder, staticServer(path.join(__dirname, '../../client' + folder)));
+        server.use(folder, function(req, res){
             res.status(404).send('File not found.');
         });
     });
 
     // retrieve config items for client
     publicConfigKeys.forEach(function(key){
-        indexPageEjsData.serverConfig[key] = app.get(key);
+        indexPageEjsData.serverConfig[key] = server.get(key);
     });
 
     // nothing matched, so just send the homepage
-    app.use(function(req, res) {
+    server.use(function(req, res) {
         // in production and have a cached version, we will just send that
-        if (app.get('env') === 'production' && cachedIndexPage.length) {
+        if (server.get('env') === 'production' && cachedIndexPage.length) {
             res.status(200).type('html').end(cachedIndexPage);
 
         // render the index page & cache for production
@@ -57,7 +57,7 @@ module.exports = function mountStaticFileServer(app) {
 var staticServer = require('loopback').static,
     path = require('path');
 
-module.exports = function mountStaticFileServer(app) {
-    app.use(staticServer(path.join(__dirname, '../../client')));
+module.exports = function mountStaticFileServer(server) {
+    server.use(staticServer(path.join(__dirname, '../../client')));
 };
 */
