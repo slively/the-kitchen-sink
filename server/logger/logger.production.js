@@ -6,7 +6,7 @@ module.exports = function loggerDev() {
         transports: [
             new (winston.transports.Console)({
                 level: 'debug',
-                handleExceptions: true,
+                handleExceptions: false,
                 prettyPrint: true,
                 timestamp: true
             })

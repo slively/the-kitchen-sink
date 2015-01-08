@@ -1,15 +1,37 @@
 {
   "name": "node-loopback-template",
-  "version": "0.0.0",
-  "main": "server/server.js",
+  "version": "0.0.1",
+  "main": "slc run server/server.js",
   "scripts": {
-    "test": "jshint .",
-    "start": "node server/server.js"
+    "jshint-client": "jshint ./client && echo 'JSHint (client) ok'",
+    "jshint-server": "jshint ./server && echo 'JSHint (server) ok'",
+    "jshint": "npm run jshint-client && npm run jshint-server && echo 'JSHint ok'",
+    "test-client": "mocha ./client/tests/unit --recursive && mocha ./client/tests/e2e --recursive --timeout 4000 && npm run test-coverage-client && echo 'Tests (client) ok'",
+    "test-server": "mocha ./server/tests/unit --recursive && mocha ./server/tests/e2e --recursive && npm run test-coverage-server && echo 'Tests (server) ok'",
+    "test": "npm run test-client && npm run test-server",
+    "test-coverage-client": "istanbul cover --dir ./client/tests/coverage -x \"**/client/js/lib/**\" node_modules/.bin/_mocha -- -u exports -R spec ./client/tests/unit/**/*.js",
+    "test-coverage-server": "istanbul cover --dir ./server/tests/coverage -x \"**/server/logger/**\" -x \"**/server/server.js\" -x \"**/server/boot/**\" node_modules/.bin/_mocha -- -u exports -R spec ./server/tests/unit/**/*.js",
+    "test-coverage": "npm run test-coverage-client && npm run test-coverage-server",
+    "compile-index-html": "index-env -i client/index.ejs -c client -o client/index.html",
+    "ng-html2js": "ng-html2js /static/html/ ./client/static/js/bundle.js -m app -b ./client -a && echo 'ng-html2js ok'",
+    "less": "lessc ./client/less/style.less > ./client/static/css/style.css -x && echo 'Less ok'",
+    "browserify": "browserify ./client/static/js/app/app.js -o ./client/static/js/bundle.js && echo 'Browserify ok'",
+    "uglify": "uglifyjs ./client/static/js/bundle.js -o ./client/static/js/bundle.js && echo 'Uglify ok'",
+    "build-client": "npm run jshint-client && npm run test-client && npm run compile-index-html && npm run browserify && npm run ng-html2js && npm run uglify && npm run less",
+    "build-server": "npm run jshint-server && npm run test-server && npm run generate-ng-sdk && npm run migrations-up",
+    "build": "npm run build-client && npm run build-server",
+    "migrations-up": "loopback-db-migrate up",
+    "migrations-down": "loopback-db-migrate down",
+    "generate-ng-sdk": "lb-ng ./server/server.js ./client/static/js/lib/lb-services.js",
+    "discover-models": "loopback-discover-schemas --owner=database_name --allNewModels --modelDir /server/models  && npm run generate-ng-sdk",
+    "start": "slc run server/server.js"
   },
   "dependencies": {
+    "angular": "^1.3.8",
+    "angular-resource": "^1.3.8",
+    "angular-route": "^1.3.8",
     "body-parser": "^1.10.0",
     "compression": "^1.0.3",
-    "ejs": "^1.0.0",
     "errorhandler": "^1.1.1",
     "loopback": "^2.5.0",
     "loopback-boot": "^2.2.0",
@@ -25,8 +47,23 @@
     "loopback-explorer": "^1.1.0"
   },
   "devDependencies": {
-    "jshint": "^2.5.6",
+    "browserify": "^8.0.3",
+    "browserify-middleware": "^3.0.1",
+    "chai": "*",
+    "chai-webdriver": "^1.0.0",
+    "index-env": "git://github.com/slively/index-env.git#master",
+    "istanbul": "^0.3.5",
+    "jshint": "*",
+    "less": "^2.2.0",
+    "less-middleware": "^1.0.4",
     "loopback-db-migrate": "git://github.com/slively/loopback-db-migrate.git#master",
-    "loopback-discover-schemas": "git://github.com/slively/loopback-discover-schemas.git#master"
+    "loopback-discover-schemas": "git://github.com/slively/loopback-discover-schemas.git#master",
+    "mocha": "*",
+    "ng-html2js": "git://github.com/slively/ng-html2js.git#master",
+    "selenium-webdriver": "^2.44.0",
+    "sinon": "*",
+    "sinon-chai": "*",
+    "supertest": "*",
+    "uglify-js": "^2.4.16"
   }
 }

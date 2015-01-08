@@ -1,12 +1,15 @@
 <!DOCTYPE>
-<html>
+<html ng-app="app" id="ng-app">
     <head>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link href="/static/css/style.css" rel="stylesheet" type="text/css"/>
+        <base href="/"/>
         <script type="text/javascript">
-            window.config = <%- JSON.stringify(serverConfig) %>;
+            window.config = <%- JSON.stringify(config) %>;
         </script>
     </head>
     <body>
-
+        <ng-view></ng-view>
+        <script type="text/javascript" src="/static/js/bundle.js"></script>
     </body>
 </html>

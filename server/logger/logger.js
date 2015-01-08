@@ -30,7 +30,7 @@ module.exports = function loggerDev(/* server */) {
         transports: [
             new (winston.transports.Console)({
                 level: 'debug',
-                handleExceptions: true,
+                handleExceptions: false,
                 prettyPrint: true,
                 silent: false,
                 timestamp: true,
