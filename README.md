@@ -242,7 +242,90 @@ describe('health-check', function() {
 ```
 
 --
+<br/>
+<br/>
 
+## Getting Started Client-side (./client)
+All code concerning configuring/testing/developing the client lives here.
+The front-end framework is [Angular](https://angularjs.org/), css is build with [Less](http://lesscss.org/),  dependencies are included using [Browserify](http://browserify.org/) and declared using [NPM](https://www.npmjs.com/), and environment variables are included using [index-env](https://github.com/slively/index-env).
+
+##### tldr
+__non-production__: File changes don't require server restarts.
+
+__production__: The entire client will be rolled into three optimized files and cached in memory on server start.
+
+##### Overview
+In any non-production environment the server has middleware setup so browserify and less are run as needed on request (unchanged files should be cached so it should be fast) using [browserify-middleware](https://www.npmjs.com/package/browserify-middleware) and [less-middleware](https://www.npmjs.com/package/less-middleware) in the ./server/boot/04-static-file-server.js file.
+
+After running ```NODE_ENV=production npm run build``` or ```NODE_ENV=production npm run build-client``` index.ejs will be compiled to index.html, browserify and less will compile with production settings, angular teplates in the html folder will be bundled into bundle.js, uglify will be run on the bundle.js, and the server will cache index.html, style.css, and bundle.js in memory. 
+
+
+--
+### index.ejs
+This is the index file for the client, when the build task is run it will be compile to index.html using the relevant config.json file. The config is accessible with ```var cfg = window.config;``` in the browser;
+```
+npm run build-client // index.ejs + config.json -> index.html
+NODE_ENV=production npm run build-client // index.ejs + config.production.json -> index.html
+```
+
+--
+### less/
+All your less files goe here, the build job will compile style.less > ./client/static/css/style.css
+
+--
+### static/
+Everything thing this folder is served as a static file, if not found a blank 404 page is returned.
+
+
+##### html/
+Put all of your angular templates in here and they will be rolled into bundle.js on build.
+
+
+##### js/lib/
+Put your included libraries here that aren't on NPM, this folder is ignore by jshint.
+
+
+##### js/app/
+All Angular code goes here. This is the entry point for browserify, you can organize files however you like in this folder, but make sure app.js is the main file.
+
+--
+### tests/
+All client side tests go in this folder, when the test coverage task is run it will be put into ./client/tests/coverage
+
+
+##### e2e/
+This folder is for functional selenium tests of the client.
+```javascript
+var driver = require('../helpers/e2e-driver'),
+    chai = require('chai').use(require('chai-webdriver')(driver));
+
+describe('home page functional test', function() {
+    it('should have a h3 title of \'Welcome to the LAN party.\'', function(done) {
+        driver.get('http://localhost:3000/');
+        chai.expect('#home h3').dom.to.contain.text('Welcome to the kitchen sink.',done);
+    }) ;
+});
+```
+
+##### unit/
+This folder is for unit testing Angular code.
+```javascript
+var chai = require('chai'),
+    expect = chai.expect;
+
+describe('home controller', function() {
+    var controllerArgs = require('../../../static/js/app/modules/home/homeController.js'),
+        controller = controllerArgs[2];
+
+    it('should $scope and $window.', function() {
+        expect(controllerArgs[0]).to.equal('$scope');
+        expect(controllerArgs[1]).to.equal('$window');
+        expect(controller).to.be.a('function');
+    });
+});
+```
+
+--
 ### NPM Cheat Sheet 
 ```
 npm start // start server
