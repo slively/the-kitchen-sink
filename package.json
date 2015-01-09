@@ -1,5 +1,5 @@
 {
-  "name": "node-loopback-template",
+  "name": "the-kitchen-sink",
   "version": "0.0.1",
   "main": "slc run server/server.js",
   "scripts": {
@@ -61,6 +61,7 @@
     "loopback-discover-models": "git://github.com/slively/loopback-discover-models.git#master",
     "mocha": "*",
     "ng-html2js": "git://github.com/slively/ng-html2js.git#master",
+    "phantomjs": "^1.9.13",
     "selenium-webdriver": "^2.44.0",
     "sinon": "*",
     "sinon-chai": "*",
