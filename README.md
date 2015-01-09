@@ -1,7 +1,7 @@
 ## Getting Started Server-side (./server)
 All code concerning booting/configuring/developing the web server lives in this directory.
 The server is built on [loopback.io](http://loopback.io/) which is build on [expressjs](http://expressjs.com/).
-Anything you may be used to with expressjs will work, there are just a bunch of built in extras here.
+Anything you may be used to with expressjs will work, there are just a bunch of built in extras here. For example,  when run with NODE_ENV=production clustering is set up automatically as a webserver per core.
 
 --
 ### server.js
@@ -323,14 +323,33 @@ describe('home controller', function() {
 --
 ### NPM Cheat Sheet 
 ```
-npm start // start server
-npm run test-server // run all unit & e2e tests and 'npm test-coverage-server'
-npm run test-coverage-server // output test coverage report to ./server/tests/coverage/
-npm run jshint-server // run jshint in ./server/ except ./server/tests/coverage/ (see .jshintrc & .jshintignore for more)
+// client
+npm run jshint-client
+npm run test-client // includes test coverage
+npm run test-coverage-client
+npm run build-client
+npm run ng-sdk // generate angular SDK from ./server/models (outputs to ./client/static/js/lib/lb-services.js)
+npm run compile-index-html // generate index.html for environment
+npm run browserify // generate bundle.js for environment
+npm run ng-html2js // compile ./client/static/html/ to javascript and append to bundle.js
+npm run uglify // minify bundle.js
+npm run less // compile ./client/less/style.less -> ./client/css/style.css
+
+// server
+npm start
+npm run jshint-server
+npm run test-server // includes test coverage
+npm run test-coverage-server
+npm run build-server
 npm run migrations-create // create a new migration script (will be prompted for script name)
 npm run migrations-up // run up on all new migrations
 npm run migrations-down // run down on all previously run migrations
 npm run discover-models // generate ./server/models/MyModel.js & ./server/models/MyModel.json from an existing datasource
+
+// everything
+npm run jshint
+npm run test
+npm run build
 ```
 
 --
