@@ -1,8 +1,3 @@
-# the-kitchen-sink
-From git clone to production ASAP.
-<br />
-<br />
-
 ## Getting Started Server-side (./server)
 All code concerning booting/configuring/developing the web server lives in this directory.
 The server is built on [loopback.io](http://loopback.io/) which is build on [expressjs](http://expressjs.com/).
