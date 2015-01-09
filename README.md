@@ -2,24 +2,6 @@
 From git clone to production ASAP.
 <br />
 <br />
- 
-## NPM Tips
-
-#### Remove the spinner
-```
-npm config set spin false
-```
-
-#### Don't display that long error message if something fails
-```
-npm run <some-command> --loglevel silent
-```
-
-#### Got error : Error: EACCES, permission denied
-```
-sudo npm ....
-```
-<br />
 
 ## Getting Started Server-side (./server)
 All code concerning booting/configuring/developing the web server lives in this directory.
@@ -261,9 +243,7 @@ describe('health-check', function() {
 
 --
 
-
-
-#### NPM Cheat Sheet (use NODE_ENV=enviroment-name npm run .... for different environments)
+### NPM Cheat Sheet 
 ```
 npm start // start server
 npm run test-server // run all unit & e2e tests and 'npm test-coverage-server'
@@ -273,4 +253,29 @@ npm run migrations-create // create a new migration script (will be prompted for
 npm run migrations-up // run up on all new migrations
 npm run migrations-down // run down on all previously run migrations
 npm run discover-models // generate ./server/models/MyModel.js & ./server/models/MyModel.json from an existing datasource
+```
+
+--
+
+### NPM Tips
+
+##### Set environment
+```
+NODE_ENV=enviroment npm run ...
+NODE_ENV=enviroment npm start
+```
+
+##### Remove the spinner
+```
+npm config set spin false
+```
+
+##### Don't display that long error message if something fails
+```
+npm run <some-command> --loglevel silent
+```
+
+##### Got error : Error: EACCES, permission denied
+```
+sudo npm ....
 ```
