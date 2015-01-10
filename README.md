@@ -71,7 +71,7 @@ module.exports = function(MyModel) {
   MyModel.beforeCreate = function(next, modelInstance) {
       if(modelInstance.thisIsBadNews) {
           var e = new Error('Bad news bears!');
-          e.status = e.statusCode = 400;
+          e.status = 400;
           next(e);
           return;
       }
@@ -88,14 +88,14 @@ module.exports = function(MyModel) {
       
       if (!body.name) {
           var e = new Error('The name field is required.');
-          e.status = e.statusCode = 400;
+          e.status = 400;
           cb(e);
           return;
       }
       
       if (Math.random() <= .5) {
           var e = new Error('Awww shucks');
-          e.status = e.statusCode = 500;
+          e.status = 500;
           cb(e);
           return;
       }
@@ -171,7 +171,7 @@ module.exports = function(MyModel) {
 ```javascript
 // When a new MyModel is created, also create a new AuditLogModel
 // This could be generalized by looping through every model in server.models
-var server = require('../../server/server');
+var server = require('../server/server');
 
 module.exports = function(MyModel) {
     var AuditLogModel = server.models.AuditLogModel;
