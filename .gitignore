@@ -12,5 +12,5 @@ client/tests/coverage
 client/static/css/style.css
 client/static/css/style.css.map
 client/static/js/bundle.js
-client/static/js/lib/lb-services.js
+client/static/js/lb-services.js
 client/index.html

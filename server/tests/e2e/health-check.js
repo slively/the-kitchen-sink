@@ -6,7 +6,7 @@ describe('Health Check Endpoint', function() {
         request(server)
             .get('/health-check/')
             .expect(200)
-            .expect('OK')
+            .expect('OK ' + server.get('env'))
             .end(done);
     });
 });

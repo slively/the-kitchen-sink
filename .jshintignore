@@ -1,5 +1,6 @@
 ./client/tests/coverage/
 ./client/static/js/lib/
 ./client/static/js/bundle.js
+./client/static/js/lb-services.js
 ./server/tests/coverage/
 ./node_modules/

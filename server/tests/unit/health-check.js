@@ -6,7 +6,8 @@ var chai = require('chai'),
 chai.use(sinonChai);
 
 describe('health-check', function() {
-    var server;
+    var server,
+        route = '/health-check/';
 
     beforeEach(function() {
         // stub out server.get
@@ -15,29 +16,42 @@ describe('health-check', function() {
     });
 
     it('should mount a GET endpoint as \'/health-check/\'.', function() {
-        expect(server.get).to.have.been.calledOnce;
-        expect(server.get).to.have.been.calledWith('/health-check/');
+        var envCall = server.get.getCall(0),
+            mountCall = server.get.getCall(1);
+
+        expect(server.get).to.have.been.calledTwice;
+        expect(envCall).to.have.been.calledWith('env');
+        expect(mountCall).to.have.been.calledWith(route);
     });
 
     it('should mount send a status of 200 with a string of \'OK\'.', function() {
         // retrieve server.get callback
-        var mountFunction = server.get.getCall(0).args[1];
-        expect(mountFunction).to.be.a('function');
+        var env = 'env',
+            getStub = sinon.stub(),
+            server = {
+                get: getStub
+            };
 
-        // stub out res.status(200) and return a spy
-        var end = sinon.spy(),
+        getStub.withArgs('env').returns(env);
+
+        require('../../routes/health-check.js')(server);
+
+        var mountRoute = getStub.secondCall.args[0],
+            mountFunction = getStub.secondCall.args[1],
+            end = sinon.spy(),
+            req = {},
             res = {
                 status: sinon.stub().withArgs(200).returns({
                     end: end
                 })
             };
 
+        expect(mountRoute).to.equal(route);
 
-        // execute server.get callback
-        mountFunction({}, res);
+        mountFunction(req, res);
 
         // make sure .end(...) get's called
         expect(end).to.have.been.calledOnce;
-        expect(end).to.have.been.calledWithExactly('OK');
+        expect(end).to.have.been.calledWithExactly('OK ' + env);
     });
 });
