@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "browserify": "^8.0.3",
-    "browserify-middleware": "^3.0.1",
+    "browserify-middleware": "^4.1.0",
     "chai": "*",
     "chai-webdriver": "^1.0.0",
     "index-env": "git://github.com/slively/index-env.git#master",
